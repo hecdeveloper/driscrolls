@@ -1,23 +1,25 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import cors from 'cors';
-import dotenv from 'dotenv';
+import express from 'express'
+import mongoose from 'mongoose'
+import cors from 'cors'
+import dotenv from 'dotenv'
 
-dotenv.config();
+dotenv.config()
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+const app = express()
+app.use(cors())
+app.use(express.json())
 
-mongoose.connect(process.env.MONGODB_URI as string)
+const PORT = process.env.PORT || 5001;
+const MONGODB_URI = process.env.MONGODB_URI as string;
+
+mongoose.connect(MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('Error connecting to MongoDB:', err));
+  .catch((error) => console.error('MongoDB connection error:', error))
 
-// ROUTES
-app.get('/api/users', (req, res) => {
-  // GET USERS
-  res.json([{ id: '1', name: 'John Doe', email: 'john@example.com' }]);
-});
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'Backend is working!' })
+})
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
